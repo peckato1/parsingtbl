@@ -1,0 +1,5 @@
+td.content-asterisk::after {
+	content: " *";
+	color: gray;
+}
+
