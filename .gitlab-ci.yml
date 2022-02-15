@@ -1,0 +1,16 @@
+pages:
+  stage: deploy
+  image: gitlab.fit.cvut.cz:5000/ict/alpine-docker-images/ci:3.14
+  before_script:
+    - apk add --no-cache npm
+  script:
+    - npm install
+    - npm run build
+    - mv public public.old
+    - mkdir -p public/
+    - cp .fit-pages.yml public/
+    - cp -r build/* public/
+  artifacts:
+    paths:
+      - public/
+    expire_in: 1 hour

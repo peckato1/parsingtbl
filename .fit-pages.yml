@@ -1,0 +1,12 @@
+# Uncomment if you want to deploy pages to pages.fit.cvut.cz instead of *.pages.fit.
+domain: pages.fit.cvut.cz
+
+# Allow anyone to access site from the master branch, require authentication to
+# access any other branches (e.g. /@dev/index.html).
+access:
+  master:
+    /:
+      allow: [ANONYMOUS]
+  '*':
+    /:
+      allow: [AUTHENTICATED]
