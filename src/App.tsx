@@ -26,7 +26,7 @@ function parseGrammar(text: string) {
 			continue
 		}
 
-		let splitted = row.split("->").map((e) => e.trim().split(" "))
+		let splitted = row.split("->").map((e) => e.trim().split(" ").filter(e => e.length > 0))
 		if (splitted.length !== 2) {
 			throw new Error("Unable to decompose rule. None or multiple '->' on one line")
 		}
@@ -69,7 +69,7 @@ function parseWord(input: string) {
 	if (i === "") {
 		return []
 	} else {
-		return i.split(" ")
+		return i.split(" ").filter(e => e.length > 0)
 	}
 }
 
