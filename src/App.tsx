@@ -1,7 +1,8 @@
 import React from 'react'
-import InputForm from './components/InputForm'
+import { GrammarForm, WordForm } from './components/InputForm'
 import FirstFollowTable from './components/FirstFollowTable'
 import ParsingTable from './components/ParseTable'
+import Analyzer from './components/Analyzer'
 import { Grammar, NonterminalSymbol, TerminalSymbol, Rule, compute } from './ll'
 
 const isNonterminal = (ident: string) => (/^[A-Z]/).test(ident)
@@ -59,8 +60,19 @@ function parseGrammar(text: string) {
 	}
 }
 
+function parseWord(input: string) {
+	let i = input = input.trim()
+	if (i === "") {
+		return []
+	} else {
+		return i.split(" ")
+	}
+}
+
 function App() {
 	const [ grammar, setGrammar ] = React.useState<{grammar?: Grammar, error?: string}>({grammar: undefined, error: undefined})
+	const [ word, setWord ] = React.useState<TerminalSymbol[]>([])
+
 	const onGrammarInput = (event: any) => {
 		try {
 			let grammar = parseGrammar(event.target.value)
@@ -69,13 +81,18 @@ function App() {
 			setGrammar(() => { return {grammar: undefined, error: error.message}})
 		}
 	}
+	const onWordInput = (event: any) => {
+		setWord(() => parseWord(event.target.value))
+	}
 
 	const LL1 = grammar.grammar ? compute(grammar.grammar) : null
 
 	return (
 		<div className="row">
 			<div className="col-lg-4">
-				<InputForm height={250} onChange={onGrammarInput} error={grammar.error} />
+				<GrammarForm height={250} onChange={onGrammarInput} error={grammar.error} />
+				<hr />
+				<WordForm onChange={onWordInput} />
 			</div>
 			<div className="col-lg-8">
 				{grammar.grammar && (
@@ -83,6 +100,8 @@ function App() {
 						<FirstFollowTable grammar={grammar.grammar} firstR={LL1?.firstR!} firstN={LL1?.firstN!} followN={LL1?.followN!} />
 						<hr />
 						<ParsingTable grammar={grammar.grammar} parseTable={LL1?.parsingTable!} />
+						<hr />
+						<Analyzer grammar={grammar.grammar} parseTable={LL1?.parsingTable!} word={word} />
 					</React.Fragment>)}
 			</div>
 		</div>
