@@ -11,3 +11,15 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+table.row-counter tbody {
+  counter-reset: row-num;
+}
+
+table.row-counter tbody tr {
+  counter-increment: row-num;
+}
+
+table.row-counter tbody tr td:first-child::before {
+    content: counter(row-num) ". ";
+}

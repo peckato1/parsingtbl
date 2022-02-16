@@ -52,10 +52,11 @@ interface Props {
 }
 export default function Analyzer({grammar, parseTable, word}: Props) {
 	return (
-		<table className="table table-bordered table-sm">
+		<table className="table table-bordered table-sm table-striped row-counter">
 			<caption>Sequence of steps of the LL1 analyzer for the word <code>{show(word)}</code></caption>
 			<thead className="table-light">
 				<tr>
+					<th>Step</th>
 					<th>Input</th>
 					<th>Stack</th>
 					<th>Left parse</th>
@@ -67,9 +68,10 @@ export default function Analyzer({grammar, parseTable, word}: Props) {
 					const className = (i === array.length - 1) ? (stack.length === 0 && input.length === 0 ? "table-success" : "table-danger") : ""
 					return (
 						<tr className={className}>
+							<td></td>
 							<td><code>{show(input)}</code></td>
 							<td><code>{show(stack)}</code></td>
-							<td>{parse.map(i => i + 1).join(" ")}</td>
+							<td>{parse.map(i => i + 1).join(", ")}</td>
 						</tr>
 					)
 				})}
