@@ -19,7 +19,7 @@ export function GrammarForm({onChange, error, height}: Props) {
 				Could not parse the input: {error}
 			</div>
 			<div className="form-text">
-					Please enter the rules in the form <code>A -&gt; B c Alpha</code>.
+					Please enter the rules in the form <code>A -&gt; B c Alpha</code> and place each rule on new line.
 					Leave right hand side empty for <code>A -&gt; &epsilon;</code>.
 					Symbols must be separated by a space (otherwise they are considered as one symbol).
 					Symbols starting with uppercase letter are considered as nonterminals.
