@@ -17,6 +17,10 @@ function parseGrammar(text: string) {
 		throw new Error("Empty input")
 	}
 
+	if (text.includes("ε")) {
+		throw new Error("ε in the text. Leave RHS empty for nullable rule ('A -> ')")
+	}
+
 	for(let row of text.trim().split("\n")) {
 		if (row.trim().length === 0) {
 			continue
