@@ -25,7 +25,7 @@ function parse(grammar: Grammar, parseTable: Map<NonterminalSymbol, Map<Terminal
 		if (grammar.nonterminals.includes(last)) {
 			let rules = parseTable.get(last)?.get(input.length > 0 ? input[0] : epsilon)
 			if (!rules || rules.size !== 1) {
-				return res
+				break
 			}
 
 			let rule = [...rules][0]
@@ -37,7 +37,7 @@ function parse(grammar: Grammar, parseTable: Map<NonterminalSymbol, Map<Terminal
 			stack.shift()
 			input.shift()
 		} else {
-			return res
+			break
 		}
 
 		res.push({input: [...input], stack: [...stack], parse: [...parse]})
