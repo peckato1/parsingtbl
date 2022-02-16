@@ -33,9 +33,11 @@ function parse(grammar: Grammar, parseTable: Map<NonterminalSymbol, Map<Terminal
 			stack = [...grammar.rules[rule].rhs].concat(stack)
 
 			parse.push(rule)
-		} else {
+		} else if (input.length > 0 && last && last === input[0]) { // match
 			stack.shift()
 			input.shift()
+		} else {
+			return res
 		}
 
 		res.push({input: [...input], stack: [...stack], parse: [...parse]})
