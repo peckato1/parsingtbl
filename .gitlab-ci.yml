@@ -4,7 +4,7 @@ pages:
   before_script:
     - apk add --no-cache npm
   script:
-    - npm install
+    - npm ci
     - npm run build
     - mv public public.old
     - mkdir -p public/
