@@ -1,6 +1,6 @@
 {
   "name": "parsingtbl",
-  "version": "alpha",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@types/react": "^17.0.39",
