@@ -95,7 +95,6 @@ function follow(grammar: Grammar, firstN: Map<NonterminalSymbol, Set<GrammarSymb
 		let newFollowN = new Map(Array.from(followN))
 
 		for (let rule of grammar.rules) {
-			changed = false
 			const { lhs, rhs } = rule
 
 			for (let index = 0; index < rhs.length; ++index) {
@@ -117,9 +116,9 @@ function follow(grammar: Grammar, firstN: Map<NonterminalSymbol, Set<GrammarSymb
 					}
 				}
 			}
-
-			followN = newFollowN
 		}
+
+		followN = newFollowN
 	}
 
 	return followN
