@@ -3,6 +3,7 @@ import { GrammarForm, WordForm } from './components/InputForm'
 import FirstFollowTable from './components/FirstFollowTable'
 import ParsingTable from './components/ParseTable'
 import Analyzer from './components/Analyzer'
+import ParserCode from './components/ParserCode'
 import { Grammar, NonterminalSymbol, TerminalSymbol, Rule, compute } from './ll'
 
 const isNonterminal = (ident: string) => (/^[A-Z]/).test(ident)
@@ -106,6 +107,8 @@ function App() {
 						<ParsingTable grammar={grammar.grammar} parseTable={LL1?.parsingTable!} />
 						<hr />
 						<Analyzer grammar={grammar.grammar} parseTable={LL1?.parsingTable!} word={word} />
+						<hr />
+						<ParserCode grammar={grammar.grammar} parseTable={LL1?.parsingTable!} />
 					</React.Fragment>)}
 			</div>
 		</div>
