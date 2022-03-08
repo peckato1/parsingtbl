@@ -37,7 +37,7 @@ export default function FirstFollowTable({grammar, firstN, followN, firstR}: Pro
 					<th></th>
 					<th>Rule (A {htmlArrow} {htmlAlpha})</th>
 					<th>First({htmlAlpha})</th>
-					<th>First(A)</th>
+					<th>first[A]</th>
 					<th>Follow(A)</th>
 				</tr>
 			</thead>
