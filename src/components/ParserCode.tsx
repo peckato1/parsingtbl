@@ -23,7 +23,7 @@ function groups(row: Map<TerminalSymbol|Epsilon, Set<number>>) {
 function sourceCode(grammar: Grammar, nonterminal: NonterminalSymbol, parseTable: any) {
 	let res: string;
 	res = `void ${nonterminal}()\n{\n`
-	res = res.concat("    switch(ifs.peek()) {\n")
+	res = res.concat("    switch(lookahead) {\n")
 
 	groups(parseTable.get(nonterminal)!).forEach((terminals, ruleNumber) => {
 		terminals.forEach(c => {
