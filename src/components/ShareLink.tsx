@@ -15,7 +15,18 @@ function addComponent(url: string, key: string, value?: string) {
 
 export default function ShareLink({grammar, word}: Props) {
 	const onClick = React.useCallback(() => {
-		let url = `${window.location.protocol}//${window.location.host}${window.location.pathname}?`
+		let url = `${window.location.protocol}//${window.location.host}${window.location.pathname}`
+
+		// pagesFIT don't work well with query strings in the url if there is no ".html" in the path, work around for a while
+		if (window.location.pathname.startsWith("/peckato1/parsingtbl")) {
+			if (!window.location.pathname.endsWith("/")) {
+				url = url.concat("/")
+			}
+
+			url = url.concat("index.html")
+		}
+
+		url = url.concat("?")
 		url = addComponent(url, "g", grammar)
 		url = addComponent(url, "w", word)
 		navigator.clipboard.writeText(url)
