@@ -4,11 +4,11 @@ import FirstFollowTable from './components/FirstFollowTable'
 import ParsingTable from './components/ParseTable'
 import Analyzer from './components/Analyzer'
 import ParserCode from './components/ParserCode'
-import { Grammar, NonterminalSymbol, TerminalSymbol, Rule, compute } from './ll'
+import { NonterminalSymbol, TerminalSymbol, Rule, compute } from './ll'
 
 const isNonterminal = (ident: string) => (/^[A-Z]/).test(ident)
 
-function parseGrammar(text: string) {
+function parseGrammar(text: string | undefined) {
 	let nonterminals: NonterminalSymbol[] = []
 	let nonterminalsOrder: NonterminalSymbol[] = []
 	let terminals: TerminalSymbol[] = []
@@ -65,7 +65,7 @@ function parseGrammar(text: string) {
 	}
 }
 
-function parseWord(input: string) {
+function parseWord(input: string): string[] {
 	let i = input = input.trim()
 	if (i === "") {
 		return []
@@ -75,41 +75,47 @@ function parseWord(input: string) {
 }
 
 function App() {
-	const [ grammar, setGrammar ] = React.useState<{grammar?: Grammar, error?: string}>({grammar: undefined, error: undefined})
-	const [ word, setWord ] = React.useState<TerminalSymbol[]>([])
+	const [ grammar, setGrammar ] = React.useState<string>()
+	const [ word, setWord ] = React.useState<string>("")
 
-	const onGrammarInput = (event: any) => {
-		try {
-			let grammar = parseGrammar(event.target.value)
-			setGrammar(() => { return {grammar: grammar, error: undefined}})
-		} catch (error: any) {
-			setGrammar(() => { return {grammar: undefined, error: error.message}})
-		}
-	}
-	const onWordInput = (event: any) => {
-		setWord(() => parseWord(event.target.value))
+	const onGrammarFormEventChange = (event: any) => {
+		setGrammar(() => event.target.value)
 	}
 
-	const LL1 = grammar.grammar ? compute(grammar.grammar) : null
+	const onWordFormEventChange = (event: any) => {
+		setWord(() => event.target.value)
+	}
+
+	let domLL: any = undefined
+	let grammarParseError: string | undefined = undefined
+
+	try {
+		let g = parseGrammar(grammar)
+		const LL1 = g ? compute(g) : undefined
+		domLL = (
+			<React.Fragment>
+				<FirstFollowTable grammar={g} firstR={LL1?.firstR!} firstN={LL1?.firstN!} followN={LL1?.followN!} />
+				<hr />
+				<ParsingTable grammar={g} parseTable={LL1?.parsingTable!} />
+				<hr />
+				<Analyzer grammar={g} parseTable={LL1?.parsingTable!} word={parseWord(word)} />
+				<hr />
+				<ParserCode grammar={g} parseTable={LL1?.parsingTable!} />
+			</React.Fragment>
+		)
+	} catch(error: any) {
+		grammarParseError = error.message
+	}
 
 	return (
 		<div className="row">
 			<div className="col-lg-4">
-				<GrammarForm height={250} onChange={onGrammarInput} error={grammar.error} />
+				<GrammarForm height={250} onChange={onGrammarFormEventChange} error={grammarParseError} />
 				<hr />
-				<WordForm onChange={onWordInput} />
+				<WordForm onChange={onWordFormEventChange} />
 			</div>
 			<div className="col-lg-8">
-				{grammar.grammar && (
-					<React.Fragment>
-						<FirstFollowTable grammar={grammar.grammar} firstR={LL1?.firstR!} firstN={LL1?.firstN!} followN={LL1?.followN!} />
-						<hr />
-						<ParsingTable grammar={grammar.grammar} parseTable={LL1?.parsingTable!} />
-						<hr />
-						<Analyzer grammar={grammar.grammar} parseTable={LL1?.parsingTable!} word={word} />
-						<hr />
-						<ParserCode grammar={grammar.grammar} parseTable={LL1?.parsingTable!} />
-					</React.Fragment>)}
+				{domLL}
 			</div>
 		</div>
 	   );
