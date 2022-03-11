@@ -5,6 +5,7 @@ import FirstFollowTable from './components/FirstFollowTable'
 import ParsingTable from './components/ParseTable'
 import Analyzer from './components/Analyzer'
 import ParserCode from './components/ParserCode'
+import ShareLink from './components/ShareLink'
 import { NonterminalSymbol, TerminalSymbol, Rule, compute } from './ll'
 
 const isNonterminal = (ident: string) => (/^[A-Z]/).test(ident)
@@ -135,6 +136,8 @@ function App() {
 				<GrammarForm height={250} onChange={onGrammarFormEventChange} error={grammarParseError} value={grammar} />
 				<hr />
 				<WordForm onChange={onWordFormEventChange} value={word} />
+				<hr />
+				<ShareLink grammar={grammar} word={word} />
 			</div>
 			<div className="col-lg-8">
 				{domLL}
