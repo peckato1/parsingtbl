@@ -1,10 +1,11 @@
 interface Props {
 	onChange: (event: any) => void;
+	value?: string;
 	error?: string;
-	height?: number
+	height?: number;
 }
 
-export function GrammarForm({onChange, error, height}: Props) {
+export function GrammarForm({onChange, error, height, value}: Props) {
 	return (
 		<div className="form-floating">
 			<textarea
@@ -13,6 +14,7 @@ export function GrammarForm({onChange, error, height}: Props) {
 				id="grammarInput"
 				style={{ height: (height || "200") + "px"}}
 				onChange={onChange}
+				value={value}
 			></textarea>
 			<label htmlFor="grammarInput">Enter CFG production rules</label>
 			<div className="invalid-feedback">
@@ -29,7 +31,7 @@ export function GrammarForm({onChange, error, height}: Props) {
 	   );
 }
 
-export function WordForm({onChange}: Props) {
+export function WordForm({onChange, value}: Props) {
 	return (
 		<div className="form-floating">
 			<input type="text"
@@ -37,6 +39,7 @@ export function WordForm({onChange}: Props) {
 				placeholder="Input word"
 				id="wordInput"
 				onChange={onChange}
+				value={value}
 			/>
 			<label htmlFor="wordInput">Enter input word to analyze</label>
 			<div className="form-text">

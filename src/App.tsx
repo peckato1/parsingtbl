@@ -1,4 +1,5 @@
 import React from 'react'
+import queryString from 'query-string'
 import { GrammarForm, WordForm } from './components/InputForm'
 import FirstFollowTable from './components/FirstFollowTable'
 import ParsingTable from './components/ParseTable'
@@ -74,7 +75,22 @@ function parseWord(input: string): string[] {
 	}
 }
 
+function getFromQueryString(key: string) {
+	let qs = queryString.parse(window.location.search)
+	if (!qs) {
+		return
+	}
+
+	let val = qs[key]
+	if (!val) {
+		return
+	}
+
+	return val as string
+}
+
 function App() {
+	const [ firstRun, setFirstRun ] = React.useState<boolean>(true) // load from querystring only on first run
 	const [ grammar, setGrammar ] = React.useState<string>()
 	const [ word, setWord ] = React.useState<string>("")
 
@@ -84,6 +100,12 @@ function App() {
 
 	const onWordFormEventChange = (event: any) => {
 		setWord(() => event.target.value)
+	}
+
+	if (firstRun) {
+		setGrammar(() => getFromQueryString("g"))
+		setWord(() => getFromQueryString("w") ?? "")
+		setFirstRun(() => false)
 	}
 
 	let domLL: any = undefined
@@ -110,9 +132,9 @@ function App() {
 	return (
 		<div className="row">
 			<div className="col-lg-4">
-				<GrammarForm height={250} onChange={onGrammarFormEventChange} error={grammarParseError} />
+				<GrammarForm height={250} onChange={onGrammarFormEventChange} error={grammarParseError} value={grammar} />
 				<hr />
-				<WordForm onChange={onWordFormEventChange} />
+				<WordForm onChange={onWordFormEventChange} value={word} />
 			</div>
 			<div className="col-lg-8">
 				{domLL}
