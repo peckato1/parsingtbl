@@ -22,7 +22,7 @@ export function GrammarForm({onChange, error, height, value}: Props) {
 			</div>
 			<div className="form-text">
 					Please enter the rules in the form <code>A -&gt; B c Alpha</code> and place each rule on new line.
-					Leave right hand side empty for <code>A -&gt; &epsilon;</code>.
+					Leave right hand side empty or use &epsilon; for <code>A -&gt; &epsilon;</code> rule.
 					Symbols must be separated by a space (otherwise they are considered as one symbol).
 					Symbols starting with uppercase letter are considered as nonterminals.
 					Left hand side of the first rule defines the initial symbol.

@@ -9,6 +9,7 @@ import ShareLink from './components/ShareLink'
 import { NonterminalSymbol, TerminalSymbol, Rule, compute } from './ll'
 
 const isNonterminal = (ident: string) => (/^[A-Z]/).test(ident)
+const epsilonStr = "ε"
 
 function parseGrammar(text: string | undefined) {
 	let nonterminals: NonterminalSymbol[] = []
@@ -18,10 +19,6 @@ function parseGrammar(text: string | undefined) {
 
 	if (!text || text.trim().length === 0) {
 		throw new Error("Empty input")
-	}
-
-	if (text.includes("ε")) {
-		throw new Error("ε in the text. Leave RHS empty for nullable rule ('A -> ')")
 	}
 
 	for(let row of text.trim().split("\n")) {
@@ -44,8 +41,10 @@ function parseGrammar(text: string | undefined) {
 			throw new Error("LHS is not a nonterminal symbol")
 		}
 
-		if (rhs.length === 1 && rhs[0] === "") {
+		if (rhs.length === 1 && (rhs[0] === "" || rhs[0] === epsilonStr)) {
 			rules.push({lhs: lhs[0], rhs: []})
+		} else if (rhs.includes(epsilonStr)) {
+			throw new Error(`Found ${epsilonStr} in the RHS of the rule but the rule was not in the form A -> ${epsilonStr}`)
 		} else {
 			rhs.forEach((symb) => {
 				if (isNonterminal(symb)) {
