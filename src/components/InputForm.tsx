@@ -26,6 +26,7 @@ export function GrammarForm({onChange, error, height, value}: Props) {
 					Symbols must be separated by a space (otherwise they are considered as one symbol).
 					Symbols starting with uppercase letter are considered as nonterminals.
 					Left hand side of the first rule defines the initial symbol.
+					Lines starting with <code>#</code> are comments and do not take part in the computation.
 			</div>
 		</div>
 	   );

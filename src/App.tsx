@@ -26,6 +26,10 @@ function parseGrammar(text: string | undefined) {
 			continue
 		}
 
+		if (row.startsWith("#")) {
+			continue
+		}
+
 		let splitted = row.split("->").map((e) => e.trim().split(" ").filter(e => e.length > 0))
 		if (splitted.length !== 2) {
 			throw new Error("Unable to decompose rule. None or multiple '->' on one line")
