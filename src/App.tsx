@@ -21,12 +21,14 @@ function parseGrammar(text: string | undefined) {
 		throw new Error("Empty input")
 	}
 
-	for(let row of text.trim().split("\n")) {
-		if (row.trim().length === 0) {
-			continue
-		}
+	let rows = text.trim().split("\n").filter(row => !row.trim().startsWith("#"))
 
-		if (row.startsWith("#")) {
+	if (rows.length === 0) {
+		throw new Error("Empty input")
+	}
+
+	for(let row of rows) {
+		if (row.trim().length === 0) {
 			continue
 		}
 
