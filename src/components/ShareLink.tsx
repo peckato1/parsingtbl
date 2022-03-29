@@ -18,7 +18,7 @@ export default function ShareLink({grammar, word}: Props) {
 		let url = `${window.location.protocol}//${window.location.host}${window.location.pathname}`
 
 		// pagesFIT don't work well with query strings in the url if there is no ".html" in the path, work around for a while
-		if (window.location.pathname.startsWith("/peckato1/parsingtbl")) {
+		if (window.location.pathname.startsWith("/peckato1/parsingtbl") && !window.location.pathname.endsWith("index.html")) {
 			if (!window.location.pathname.endsWith("/")) {
 				url = url.concat("/")
 			}
