@@ -43,6 +43,8 @@ function sourceCode(grammar: Grammar, nonterminal: NonterminalSymbol, parseTable
 		})
 		res = res.concat("        break;\n");
 	})
+	res = res.concat("    default:\n")
+	res = res.concat("        throw ParserError();\n")
 	res = res.concat("    }\n")
 	res = res.concat("}")
 	return res;
