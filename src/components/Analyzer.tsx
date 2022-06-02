@@ -86,7 +86,7 @@ interface Props {
 export default function Analyzer({grammar, parseTable, word}: Props) {
 	return (
 		<table className="table table-bordered table-sm table-striped row-counter">
-			<caption>Sequence of steps of the LL1 analyzer for the word <code>{show(word)}</code></caption>
+			<caption>Sequence of steps of the LL1 analyzer for the word <code>{show(word)}</code>. Top of the stack is on the left.</caption>
 			<thead className="table-light">
 				<tr>
 					<th>Step</th>
