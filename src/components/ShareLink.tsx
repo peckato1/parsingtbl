@@ -1,35 +1,18 @@
 import React from 'react'
+import { encodeHash } from '../utils/hash'
 
 interface Props {
-	word?: string;
-	grammar?: string;
-}
-
-function addComponent(url: string, key: string, value?: string) {
-	if (value && value.length > 0) {
-		return url.concat(`&${key}=`).concat(encodeURIComponent(value))
-	} else {
-		return url;
-	}
+	word: string;
+	grammar: string;
 }
 
 export default function ShareLink({grammar, word}: Props) {
 	const onClick = React.useCallback(() => {
-		let url = `${window.location.protocol}//${window.location.host}${window.location.pathname}`
+		const newHash = encodeHash(grammar, word)
 
-		// pagesFIT don't work well with query strings in the url if there is no ".html" in the path, work around for a while
-		if (window.location.pathname.startsWith("/peckato1/parsingtbl") && !window.location.pathname.endsWith("index.html")) {
-			if (!window.location.pathname.endsWith("/")) {
-				url = url.concat("/")
-			}
+		window.location.hash = '#' + newHash
 
-			url = url.concat("index.html")
-		}
-
-		url = url.concat("?")
-		url = addComponent(url, "g", grammar)
-		url = addComponent(url, "w", word)
-		navigator.clipboard.writeText(url)
+		navigator.clipboard.writeText(window.location.toString())
 	}, [grammar, word])
 
 	return (
