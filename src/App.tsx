@@ -86,14 +86,6 @@ function App() {
 	const [ word, setWord ] = React.useState<string>("")
 	const hash = useWindowHash()
 
-	const onGrammarFormEventChange = (event: any) => {
-		setGrammar(() => event.target.value)
-	}
-
-	const onWordFormEventChange = (event: any) => {
-		setWord(() => event.target.value)
-	}
-
 	React.useEffect(() => {
 		const { grammar, word } = decodeHash(hash)
 		setGrammar(() => grammar ?? "")
@@ -124,9 +116,9 @@ function App() {
 	return (
 		<div className="row">
 			<div className="col-lg-4">
-				<GrammarForm height={250} onChange={onGrammarFormEventChange} error={grammarParseError} value={grammar} />
+				<GrammarForm height={250} onInputChange={(text: string) => setGrammar(text)} error={grammarParseError} initialValue={grammar} />
 				<hr />
-				<WordForm onChange={onWordFormEventChange} value={word} />
+				<WordForm onInputChange={(text: string) => setWord(text)} initialValue={word} />
 				<hr />
 				<ShareLink grammar={grammar} word={word} />
 			</div>

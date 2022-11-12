@@ -1,11 +1,22 @@
+import { useCallback } from 'react'
+import _debounce from 'lodash.debounce'
+
 interface Props {
-	onChange: (event: any) => void;
-	value?: string;
-	error?: string;
-	height?: number;
+	onInputChange: (text: string) => void
+	error?: string
+	height?: number
+	initialValue?: string
 }
 
-export function GrammarForm({onChange, error, height, value}: Props) {
+function useEventDebouncer(delay: number, cb: any) {
+	const debounceFn = _debounce((input: string) => cb(input), delay)
+	const debouncer = useCallback(debounceFn, [cb, delay, debounceFn])
+	return (event: any) => debouncer(event.target.value)
+}
+
+export function GrammarForm({initialValue, onInputChange, error, height}: Props) {
+	const eventDebouncer = useEventDebouncer(300, onInputChange)
+
 	return (
 		<div className="form-floating">
 			<textarea
@@ -13,8 +24,8 @@ export function GrammarForm({onChange, error, height, value}: Props) {
 				placeholder="CFG rules"
 				id="grammarInput"
 				style={{ height: (height || "200") + "px"}}
-				onChange={onChange}
-				value={value}
+				onChange={eventDebouncer}
+				defaultValue={initialValue}
 			></textarea>
 			<label htmlFor="grammarInput">Enter CFG production rules</label>
 			<div className="invalid-feedback">
@@ -32,15 +43,17 @@ export function GrammarForm({onChange, error, height, value}: Props) {
 	   );
 }
 
-export function WordForm({onChange, value}: Props) {
+export function WordForm({initialValue, onInputChange}: Props) {
+	const eventDebouncer = useEventDebouncer(300, onInputChange)
+
 	return (
 		<div className="form-floating">
 			<input type="text"
 				className="form-control"
 				placeholder="Input word"
 				id="wordInput"
-				onChange={onChange}
-				value={value}
+				onChange={eventDebouncer}
+				defaultValue={initialValue}
 			/>
 			<label htmlFor="wordInput">Enter input word to analyze</label>
 			<div className="form-text">
